@@ -18,14 +18,12 @@ wasReleased	KEYWORD2
 pressedFor	KEYWORD2
 releasedFor	KEYWORD2
 lastChange	KEYWORD2
-
 setSmoothingFactor  KEYWORD2
 setReadCount        KEYWORD2
 setReadDelay        KEYWORD2
 changed             KEYWORD2
 getValue            KEYWORD2
 getRawValue         KEYWORD2
-
 getX                KEYWORD2
 getY                KEYWORD2
 getDeltaX           KEYWORD2
