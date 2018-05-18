@@ -26,6 +26,6 @@ Putting a small delay before and/or after reading the pin is not a bad idea. App
 ### 3. Smoothing algorithms
 Now when I found this idea, I got excited. The first algorithm I came across was an Exponential Moving Average (EMA) algorithm from  https://www.norwegiancreations.com/2015/10/tutorial-potentiometers-with-arduino-and-filtering/. This worked really well! However I also wanted to test the second algorithm I found, which was contributed at https://electronics.stackexchange.com/questions/64677/how-to-smooth-potentiometer-values. I was stunned by the simplicity and effectiveness of this idea, so I ended up implementing this one. (The EMA approach is still in the code, commented out.)
 
-        `value += (raw - value) / smoothingFactor;`
-        
-         
+`value += (raw - value) / smoothingFactor; //as simple as it is effective.`
+
+
