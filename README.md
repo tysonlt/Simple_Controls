@@ -1,7 +1,5 @@
 # Thwaites Controls
-Simple control classes for buttons, joysticks, and potentiometers.
-
-README file  
+Simple control classes joysticks  and potentiometers.
 
 ## License
 Arduino Potentiometer/Joystick Library Copyright (C) 2018 Tyson LT GNU GPL v3.0
@@ -12,7 +10,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/gpl.html>
 
-##Introduction
+## Introduction
 
 ### Potentiometers
 This library is intended to make it easier to use potentiometers and joysticks. One of the problems I ran into as a new Arduino user was the 'jitter' inherent in potentiometers. I was writing a MIDI program that sent Control Change messages whenever the potentiometer value changed, so this jitter causes a few random messages to be sent every few seconds. This jitter was usually about +/- 1, but I was not satisfied just adding `if (changed > 1)` in my code.
