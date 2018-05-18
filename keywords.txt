@@ -1,0 +1,48 @@
+######################
+### Classes
+######################
+
+Button	      KEYWORD1
+Potentiometer KEYWORD1
+Joystick      KEYWORD1
+
+######################
+### Methods
+######################
+begin	      KEYWORD2
+read	      KEYWORD2
+isPressed	  KEYWORD2
+isReleased	KEYWORD2
+wasPressed	KEYWORD2
+wasReleased	KEYWORD2
+pressedFor	KEYWORD2
+releasedFor	KEYWORD2
+lastChange	KEYWORD2
+
+setSmoothingFactor  KEYWORD2
+setReadCount        KEYWORD2
+setReadDelay        KEYWORD2
+changed             KEYWORD2
+getValue            KEYWORD2
+getRawValue         KEYWORD2
+
+getX                KEYWORD2
+getY                KEYWORD2
+getDeltaX           KEYWORD2
+getDeltaY           KEYWORD2
+movingLeft          KEYWORD2
+movingRight         KEYWORD2
+movingUp            KEYWORD2
+movingDown          KEYWORD2
+movedLeft           KEYWORD2
+movedRight          KEYWORD2
+movedUp             KEYWORD2
+movedDown           KEYWORD2
+heldLeftFor         KEYWORD2
+heldRightFor        KEYWORD2
+heldUpFor           KEYWORD2
+heldDownFor         KEYWORD2
+  
+######################
+### Constants
+######################
