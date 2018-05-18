@@ -1,7 +1,8 @@
 /**
  * Joystick class to simplify reading a joystick.
  * 
- * Does not handle the joystick button, that's just a normal analog button.
+ * Does not handle the joystick button, that's just a normal analog button. 
+ * Use JC_Button for that!
  * 
  * If you set a threshold, change will not be registered until the stick has
  * moved by at least that amount in any direction. This is useful if you want
