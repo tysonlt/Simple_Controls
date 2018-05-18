@@ -1,4 +1,17 @@
+#ifndef THWAITES_CONTROLS_JOYSTICK_H
+#define THWAITES_CONTROLS_JOYSTICK_H
+
+#include "Arduino.h"
+
 /**
+ * Joystick class to simplify reading a joystick.
+ * 
+ * Does not handle the joystick button, that's just a normal analog button.
+ * 
+ * If you set a threshold, change will not be registered until the stick has
+ * moved by at least that amount in any direction. This is useful if you want
+ * to 'nudge' the joystick, ie for text entry. This also helps to reduce jitter.
+ * 
  * Inspired by JC_Button.
  */
 class Joystick {
@@ -20,82 +33,107 @@ class Joystick {
     /**
      * Saves the current x/y as the centre.
      */
-    void begin() { 
-      _last_flags = 0;
-      _flags = 0;
-      _time = millis();
-      _lastChange = _time;
-      _centre_x = analogRead(_pin_x);
-      _centre_y = analogRead(_pin_y);
-    }
+    void begin();
   
     /**
      * Update current x/y. 
+     * 
+     * @return boolean Whether the value has changed beyond threshold.
      */
-    boolean read() {
-
-      //get time of read
-      _time = millis();
-  
-      //save last state
-      _last_flags = _flags;
-      _flags = 0;
-  
-      //read the pins
-      _x = analogRead(_pin_x);
-      _y = analogRead(_pin_y);
-
-      //set flags for x axis
-      if (_x > _centre_x + _threshold) {
-        _flags |= RIGHT;
-      } else if (_x < _centre_x - _threshold) {
-        _flags |= LEFT;
-      }
-  
-      //set flags for y axis (both axes can change at once)
-      if (_y < _centre_y - _threshold) {
-        _flags |= UP;
-      } else if (_y > _centre_y + _threshold) {
-        _flags |= DOWN;
-      }
-  
-      //have we changed since last read?
-      _changed = _flags != _last_flags;
-      if (_changed) {
-        _lastChange = _time;
-      }
-
-      return _changed;
-      
-    }
+    boolean read();
 
     /**
      * Time since last change in millis.
      */
-    int lastChange() {
-      return _lastChange;
-    }
+    int lastChange();
 
-    int getX() { return _x; }
-    int getY() { return _y; }
+    /**
+     * Returns the current x value.
+     */ 
+    int getX();
 
-    int getDeltaX() { return _x - _centre_x; }
-    int getDeltaY() { return _y - _centre_y; }
+    /**
+     * Returns the current y value.
+     */ 
+    int getY();
+
+    /**
+     * The current distance from the centre of the joystick.
+     */ 
+    int getDeltaX();
     
-    boolean movingLeft()  { return _flags & LEFT; }
-    boolean movingRight() { return _flags & RIGHT; }
-    boolean movingUp()    { return _flags & UP; }
-    boolean movingDown()  { return _flags & DOWN; }
+    /**
+     * The current distance from the centre of the joystick.
+     */
+    int getDeltaY();
+    
+    /**
+     * Whether the joystick is currently moving left.
+     */ 
+    boolean movingLeft();
+    
+    /**
+     * Whether the joystick is currently moving right.
+     */
+    boolean movingRight();
+    
+    /**
+     * Whether the joystick is currently moving up.
+     */
+    boolean movingUp();
+    
+    /**
+     * Whether the joystick is currently moving down.
+     */
+    boolean movingDown();
   
-    boolean movedLeft()   { return _changed && movingLeft(); }
-    boolean movedRight()  { return _changed && movingRight(); }
-    boolean movedUp()     { return _changed && movingUp(); }
-    boolean movedDown()   { return _changed && movingDown(); }
+    /**
+     * Whether the joystick has moved left since last read.
+     */ 
+    boolean movedLeft() ;
+    
+    /**
+     * Whether the joystick has moved right since last read.
+     */
+    boolean movedRight();
+    
+    /**
+     * Whether the joystick has moved up since last read.
+     */
+    boolean movedUp();
+    
+    /**
+     * Whether the joystick has moved down since last read.
+     */
+    boolean movedDown();
   
-    boolean heldLeftFor(int ms)  { return movingLeft()  && _time - _lastChange > ms; }
-    boolean heldRightFor(int ms) { return movingRight() && _time - _lastChange > ms; }
-    boolean heldUpFor(int ms)    { return movingUp()    && _time - _lastChange > ms; }
-    boolean heldDownFor(int ms)  { return movingDown()  && _time - _lastChange > ms; }
+    /**
+     * Whether the joystick has been moving left for ms milliseconds.
+     * 
+     * @param int milliseconds to consider.
+     */
+    boolean heldLeftFor(int ms);
+    
+    /**
+     * Whether the joystick has been moving right for ms milliseconds.
+     * 
+     * @param int milliseconds to consider.
+     */
+    boolean heldRightFor(int ms);
+    
+    /**
+     * Whether the joystick has been moving up for ms milliseconds.
+     * 
+     * @param int milliseconds to consider.
+     */
+    boolean heldUpFor(int ms);
+    
+    /**
+     * Whether the joystick has been moving down for ms milliseconds.
+     * 
+     * @param int milliseconds to consider.
+     */
+    boolean heldDownFor(int ms);
   
   private:
     byte _pin_x;
@@ -108,3 +146,4 @@ class Joystick {
   
 };
 
+#endif

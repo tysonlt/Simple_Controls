@@ -1,8 +1,15 @@
+#ifndef THWAITES_CONTROLS_POTENTIOMETER_H
+#define THWAITES_CONTROLS_POTENTIOMETER_H
+
+#include "Arduino.h"
+
 /**
- * Inspired by JC_Button.
+ * Class to provide smooth, easy reading of a potentiometer.
  * 
- * Can be configured to do multipe reads, add a small delay per read, and use a smoothing algorithm.
+ * Can be configured to do multiple reads, add a small delay per read, and use a smoothing algorithm.
  * There is an option to scale the output, which helps reduced jitter as well.
+ * 
+ * Inspired by JC_Button.
  */
 class Potentiometer {
 
@@ -24,71 +31,85 @@ class Potentiometer {
      */
     Potentiometer(byte pin, int resolution = 0, byte smoothingFactor = 4, byte readCount = 1, byte readDelay = 1) : 
       _pin(pin), _resolution(resolution), _smoothingFactor(smoothingFactor), _readCount(readCount), _readDelay(readDelay) {}
-    
+  
+    /**
+     * Set the resolution to remap values to.
+     * 
+     * For example, for a MIDI control, set resolution to 128.
+     */ 
+    void setResolution(int resolution);
+
+    /**
+     * Set the smoothing factor to use.
+     * 
+     * Algorithm: value += (analogRead() - value) / smoothingFactor
+     * 
+     * Default is 4.
+     */ 
+    void setSmoothingFactor(byte smoothingFactor);
+
+    /**
+     * Set how many times to read the pin.
+     * 
+     * Multiple reads may help reduce jitter, especially
+     * if not using the smoothing algorithm.
+     * 
+     * Default is 1.
+     */ 
+    void setReadCount(byte readCount);
+
+    /**
+     * How many milliseconds to delay before reading the pin.
+     * 
+     * Increased delays may help reduce jitter, especially
+     * if not using the smoothing algorithm.
+     * 
+     * Defaults to 1.
+     */ 
+    void setReadDelay(byte readDelay);
+
     /**
      * Initialise.
      * 
      * Does an initial read as a starting point, but
-     * will not update the changed status.
+     * does not update the changed status or apply smoothing.
      */
-    void begin() { 
-      _value = analogRead(_pin);
-      _lastValue = _value;
-      _time = millis();
-      _lastChange = _time;
-    }
+    void begin();
 
     /**
      * Update current value of potentiometer
      * and test whether we have changed.
+     * 
+     * @return boolean Whether the value has changed since last read.
      */
-    boolean read() {
-
-      //get time of read
-      _time = millis();
-  
-      //read the pin
-      _readPin();
-  
-      //have we changed since last read?
-      _calculateChanged();
-
-      return _changed;
-      
-    }
+    boolean read();
 
     /**
-     * Whether the value has changed since the last update.
+     * Whether the value has changed since the last read.
      */
-    boolean changed() {
-      return _changed;
-    }
+    boolean changed();
 
     /**
      * Get the current potentiometer value at the configured resolution.
+     * 
+     * Smoothing and resolution mapping will be applied if configured.
      */
-    int getValue() {
-      return _applyResolution(_value);
-    }
+    int getValue();
 
     /**
-     * Get current value, ignoring resolution.
+     * Get raw pin value, ignoring smoothing and resolution.
      */
-    int getRawValue() {
-      return _value;
-    }
+    int getRawValue();
   
     /**
      * Time since last change in millis.
      */
-    int lastChange() {
-      return _lastChange;
-    }
+    int lastChange();
 
   private:
     byte _pin;
     int _resolution = 0;
-    /*float _smoothingFactor = 0.6;*/
+    /*float _emaAlpha = 0.6;*/
     byte _smoothingFactor = 4;
     byte _readCount = 1; 
     byte _readDelay = 5;
@@ -100,89 +121,23 @@ class Potentiometer {
     /**
      * Calculate whether to set _changed based on resolution.
      */
-    void _calculateChanged() {
-
-      //compare values at the desired resolution
-      int current = _applyResolution(_value);
-      int last = _applyResolution(_lastValue);
-  
-      //have we changed since last read?
-      _changed = current != last;
-      if (_changed) {
-        _lastChange = _time;
-      }
-
-    }
+    void _calculateChanged();
 
     /**
      * Change value to configured resolution.
      */
-    int _applyResolution(int raw) {
-      if (_resolution > 0) {
-        return map(raw, 0, MAX, 0, _resolution);
-      } else {
-        return raw;
-      }
-    }
+    int _applyResolution(int raw);
     
     /**
      * Read pin using various anti-jitter strategies, if requested.
      */
-    void _readPin() {
-
-      int raw = 0;
-      
-      //save old value
-      _lastValue = _value;
-
-      //read as many times as asked to (may help prevent jitter)
-      for (byte i=0; i<_readCount; i++) {
-
-        //this may help prevent jitter and interference with other pins
-        if (_readDelay > 0) {
-          delay(_readDelay);
-        }
-
-        //read the pin
-        raw = analogRead(_pin);
-        
-      }
-      
-      //smooth the value if requested
-      _value = _smoothValue(raw);
-            
-    }
+    void _readPin();
 
     /**
      * Smooth the value based on smoothing strategy and settings.
      */ 
-    int _smoothValue(int raw) {
-
-      if (_smoothingFactor <= 0) {
-
-        //no smoothing
-        return raw; 
-
-      } else {
-
-        //use current value
-        int v = _value;
-
-        /*
-        //Exponential moving average
-        //calculate the smoothed value (see https://www.norwegiancreations.com/2015/10/tutorial-potentiometers-with-arduino-and-filtering/)
-        v = (_smoothingFactor * raw) + ((1 - _smoothingFactor) * v);
-        */
-
-        //this is as simple as it is brilliant...
-        //https://electronics.stackexchange.com/questions/64677/how-to-smooth-potentiometer-values
-        v += (raw - v) / _smoothingFactor;
-
-        return v;
-        
-      }
-      
-    }
+    int _smoothValue(int raw);
   
 };
 
+#endif
