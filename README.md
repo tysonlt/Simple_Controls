@@ -1,2 +1,2 @@
 # Thwaites Controls
-Simple control classes for buttons, joysticks, and potentiometers.
+Simple control classes for joysticks and potentiometers.
