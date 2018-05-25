@@ -1,7 +1,7 @@
 #ifndef THWAITES_CONTROLS_JOYSTICK_H
 #define THWAITES_CONTROLS_JOYSTICK_H
 
-#include "Arduino.h"
+#include "Control.h"
 
 /**
  * Joystick class to simplify reading a joystick.
@@ -14,7 +14,7 @@
  * 
  * Inspired by https://github.com/JChristensen/JC_Button.
  */
-class Joystick {
+class Joystick : public Control {
 
   const int  DEFAULT_THRESHOLD  = 150;
   const byte LEFT               = 1<<0;
@@ -29,25 +29,6 @@ class Joystick {
      */
     Joystick(byte pin_x, byte pin_y, int threshold = 150) : 
       _pin_x(pin_x), _pin_y(pin_y), _threshold(threshold) {}
-    
-    /**
-     * Saves the current x/y as the centre.
-     */
-    void begin();
-  
-    /**
-     * Update current x/y. 
-     * 
-     * This should be called once in the Arduino loop().
-     * 
-     * @return boolean Whether the value has changed beyond threshold.
-     */
-    boolean read();
-
-    /**
-     * Time since last change in millis.
-     */
-    int lastChange();
 
     /**
      * Returns the current x value.
@@ -136,16 +117,17 @@ class Joystick {
      * @param int milliseconds to consider.
      */
     boolean heldDownFor(int ms);
+
+    virtual void begin();
+    virtual boolean read();
   
   private:
     byte _pin_x;
     byte _pin_y;
     int _threshold;
-    boolean _changed = false;
     int _x, _y, _centre_x, _centre_y;
     byte _last_flags = 0, _flags = 0;
-    int _time = 0, _lastChange = 0;
-  
+
 };
 
 #endif

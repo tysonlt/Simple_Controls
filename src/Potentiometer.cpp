@@ -23,6 +23,27 @@ void Potentiometer::begin() {
 }
 
 /**
+ * Update current value of potentiometer
+ * and test whether we have changed.
+ * 
+ * This should be called once in the Arduino loop().
+ */
+boolean Potentiometer::read() {
+
+    //get time of read
+    _time = millis();
+
+    //read the pin
+    _readPin();
+
+    //have we changed since last read?
+    _calculateChanged();
+
+    return _changed;
+    
+}
+
+/**
  * Set the resolution to remap values to.
  * 
  * For example, for a MIDI control, set resolution to 128.
@@ -67,34 +88,6 @@ void Potentiometer::setReadDelay(byte readDelay) {
 }
 
 /**
- * Update current value of potentiometer
- * and test whether we have changed.
- * 
- * This should be called once in the Arduino loop().
- */
-boolean Potentiometer::read() {
-
-    //get time of read
-    _time = millis();
-
-    //read the pin
-    _readPin();
-
-    //have we changed since last read?
-    _calculateChanged();
-
-    return _changed;
-    
-}
-
-/**
- * Whether the value has changed since the last update.
- */
-boolean Potentiometer::changed() {
-    return _changed;
-}
-
-/**
  * Get the current potentiometer value at the configured resolution.
  */
 int Potentiometer::getValue() {
@@ -106,13 +99,6 @@ int Potentiometer::getValue() {
  */
 int Potentiometer::getRawValue() {
     return _value;
-}
-
-/**
- * Time since last change in millis.
- */
-int Potentiometer::lastChange() {
-    return _lastChange;
 }
 
 /**

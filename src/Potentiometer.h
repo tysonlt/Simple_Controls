@@ -2,7 +2,7 @@
 #define THWAITES_CONTROLS_POTENTIOMETER_H
 
 #include "Arduino.h"
-#include <ResponsiveAnalogRead.h>
+#include "Control.h"
 
 /**
  * Class to provide smooth, easy reading of a potentiometer.
@@ -13,7 +13,7 @@
  * Inspired by https://github.com/JChristensen/JC_Button.
  * Smoothing algorithm is from https://www.norwegiancreations.com/2015/10/tutorial-potentiometers-with-arduino-and-filtering/
  */
-class Potentiometer {
+class Potentiometer : public Control {
 
   /**
    * Maxiumum value of the potentiometer.
@@ -71,29 +71,6 @@ class Potentiometer {
     void setReadDelay(byte readDelay);
 
     /**
-     * Initialise.
-     * 
-     * Does an initial read as a starting point, but
-     * does not update the changed status or apply smoothing.
-     */
-    void begin();
-
-    /**
-     * Update current value of potentiometer
-     * and test whether we have changed.
-     * 
-     * This should be called once in the Arduino loop().
-     * 
-     * @return boolean Whether the value has changed since last read.
-     */
-    boolean read();
-
-    /**
-     * Whether the value has changed since the last read.
-     */
-    boolean changed();
-
-    /**
      * Get the current potentiometer value at the configured resolution.
      * 
      * Smoothing and resolution mapping will be applied if configured.
@@ -104,11 +81,10 @@ class Potentiometer {
      * Get raw pin value, ignoring smoothing and resolution.
      */
     int getRawValue();
-  
-    /**
-     * Time since last change in millis.
-     */
-    int lastChange();
+
+    virtual void begin();
+    virtual boolean read();
+
 
   private:
     byte _pin;
@@ -117,10 +93,8 @@ class Potentiometer {
     byte _readCount; 
     byte _readDelay;
 
-    boolean _changed;
     int _value, _lastValue;
-    int _time, _lastChange;
-
+  
     /**
      * Calculate whether to set _changed based on resolution.
      */

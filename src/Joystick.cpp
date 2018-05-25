@@ -68,13 +68,6 @@ boolean Joystick::read() {
 }
 
 /**
- * Time since last change in millis.
- */
-int Joystick::lastChange() {
-    return _lastChange;
-}
-
-/**
  * Returns the current x value.
  */ 
 int Joystick::getX() { 
