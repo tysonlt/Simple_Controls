@@ -1,7 +1,8 @@
 #ifndef THWAITES_CONTROLS_JOYSTICK_H
 #define THWAITES_CONTROLS_JOYSTICK_H
 
-#include "Control.h"
+#include "Arduino.h"
+#include "TC_Control.h"
 
 /**
  * Joystick class to simplify reading a joystick.
@@ -27,9 +28,30 @@ class Joystick : public Control {
     /**
      * Supply pins for x and y axis.
      */
-    Joystick(byte pin_x, byte pin_y, int threshold = 150) : 
-      _pin_x(pin_x), _pin_y(pin_y), _threshold(threshold) {}
+    Joystick(byte pin_x, byte pin_y, int threshold = 150, Multiplexer *mux=nullptr, byte muxChannel=0) : 
+      _pin_x(pin_x), _pin_y(pin_y), _threshold(threshold) {
+        _mux = mux;
+        _muxChannel = muxChannel;
+      }
 
+    /**
+     * Initialise.
+     * 
+     * May read the pin to get an initial value, but
+     * changed() will always return false until read() 
+     * is called.
+     */
+    void begin();
+
+    /**
+     * Update current value of the control and test whether we have changed.
+     * 
+     * This should be called once in the Arduino loop().
+     * 
+     * @return boolean Whether the value has changed since last read.
+     */
+    boolean read();
+    
     /**
      * Returns the current x value.
      */ 
@@ -118,8 +140,15 @@ class Joystick : public Control {
      */
     boolean heldDownFor(int ms);
 
-    virtual void begin();
-    virtual boolean read();
+    /**
+     * Whether the value has changed since the last read.
+     */
+    inline boolean changed() { return _changed; }
+
+    /**
+     * Time since last change in millis.
+     */
+    inline int lastChange() { return _lastChange; }
   
   private:
     byte _pin_x;
@@ -127,6 +156,8 @@ class Joystick : public Control {
     int _threshold;
     int _x, _y, _centre_x, _centre_y;
     byte _last_flags = 0, _flags = 0;
+    int _time = 0, _lastChange = 0;
+    boolean _changed = false;
 
 };
 

@@ -11,7 +11,7 @@
  * Inspired by https://github.com/JChristensen/JC_Button.
  */
 
-#include "Joystick.h"
+#include "TC_Joystick.h"
 
 /**
  * Saves the current x/y as the centre.

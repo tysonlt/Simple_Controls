@@ -2,7 +2,7 @@
 #define THWAITES_CONTROLS_POTENTIOMETER_H
 
 #include "Arduino.h"
-#include "Control.h"
+#include "TC_Control.h"
 
 /**
  * Class to provide smooth, easy reading of a potentiometer.
@@ -31,9 +31,30 @@ class Potentiometer : public Control {
      * @param byte readCount (Optional) How many times to read the pin. Default is 1.
      * @param byte readDelay (Optional) Adds a small delay before each read. Default is 1. Supply 0 to disable.
      */
-    Potentiometer(byte pin, int resolution = 0, float smoothingFactor = 0.6, byte readCount = 1, byte readDelay = 1) : 
-      _pin(pin), _resolution(resolution), _smoothingFactor(smoothingFactor), _readCount(readCount), _readDelay(readDelay) {}
+    Potentiometer(byte pin, int resolution = 0, float smoothingFactor = 0.6, byte readCount = 1, byte readDelay = 1, Multiplexer *mux=nullptr, byte muxChannel=0) : 
+      _pin(pin), _resolution(resolution), _smoothingFactor(smoothingFactor), _readCount(readCount), _readDelay(readDelay) {
+      _mux = mux;
+      _muxChannel = muxChannel; 
+    }
   
+    /**
+     * Initialise.
+     * 
+     * May read the pin to get an initial value, but
+     * changed() will always return false until read() 
+     * is called.
+     */
+    void begin();
+
+    /**
+     * Update current value of the control and test whether we have changed.
+     * 
+     * This should be called once in the Arduino loop().
+     * 
+     * @return boolean Whether the value has changed since last read.
+     */
+    boolean read();
+
     /**
      * Set the resolution to remap values to.
      * 
@@ -82,9 +103,20 @@ class Potentiometer : public Control {
      */
     int getRawValue();
 
-    virtual void begin();
-    virtual boolean read();
+    /**
+     * Whether the value has changed since the last read.
+     */
+    inline boolean changed() { return _changed; }
 
+    /**
+     * Sometimes required to convince the pot it hasn't changed. Bit of a hack.
+     */ 
+    inline void resetChanged() { _changed = false; }
+
+    /**
+     * Time since last change in millis.
+     */
+    inline int lastChange() { return _lastChange; }
 
   private:
     byte _pin;
@@ -92,9 +124,10 @@ class Potentiometer : public Control {
     float _smoothingFactor;
     byte _readCount; 
     byte _readDelay;
-
+    int _time = 0, _lastChange = 0;
     int _value, _lastValue;
-  
+    boolean _changed = false;
+    
     /**
      * Calculate whether to set _changed based on resolution.
      */

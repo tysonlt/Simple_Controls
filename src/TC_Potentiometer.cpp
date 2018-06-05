@@ -7,7 +7,7 @@
  * Inspired by https://github.com/JChristensen/JC_Button.
  */
 
-#include "Potentiometer.h"
+#include "TC_Potentiometer.h"
 
 /**
  * Initialise.
@@ -19,7 +19,7 @@ void Potentiometer::begin() {
     _value = analogRead(_pin);
     _lastValue = _value;
     _time = millis();
-    _lastChange = _time;
+    _lastChange = _time;    
 }
 
 /**
@@ -102,35 +102,6 @@ int Potentiometer::getRawValue() {
 }
 
 /**
- * Calculate whether to set _changed based on resolution.
- */
-void Potentiometer::_calculateChanged() {
-
-    //compare values at the desired resolution
-    //TODO: cache smoothed and raw when doing the read
-    int current = _applyResolution(_value);
-    int last = _applyResolution(_lastValue);
-
-    //have we changed since last read?
-    _changed = current != last;
-    if (_changed) {
-        _lastChange = _time;
-    }
-
-}
-
-/**
- * Change value to configured resolution.
- */
-int Potentiometer::_applyResolution(int raw) {
-    if (_resolution > 0) {
-        return map(raw, 0, MAX, 0, _resolution);
-    } else {
-        return raw;
-    }
-}
-
-/**
  * Read pin using various anti-jitter strategies, if requested.
  */
 void Potentiometer::_readPin() {
@@ -170,7 +141,7 @@ int Potentiometer::_smoothValue(const int raw) {
 
     } else {
 
-        //use current value
+        //use current value (don't change it)
         int v = _value;
         
         //Exponential moving average
@@ -181,4 +152,28 @@ int Potentiometer::_smoothValue(const int raw) {
     
     }
     
+}
+
+/**
+ * Calculate whether to set _changed based on resolution.
+ */
+void Potentiometer::_calculateChanged() {
+
+    //compare values at the desired resolution
+    _changed = _applyResolution(_value) != _applyResolution(_lastValue);
+    if (_changed) {
+        _lastChange = _time;
+    }
+
+}
+
+/**
+ * Change value to configured resolution.
+ */
+int Potentiometer::_applyResolution(int raw) {
+    if (_resolution > 0) {
+        return map(raw, 0, MAX, 0, _resolution);
+    } else {
+        return raw;
+    }
 }
