@@ -11,7 +11,7 @@
 class Control {
 
     protected:
-        byte _muxChannel = -1;
+        byte _muxChannel = 0;
         Multiplexer *_mux = nullptr;
 
         /**
@@ -50,7 +50,7 @@ class Control {
          * Apply mux channel, if configured
          */ 
         void applyChannel() {
-            if (_mux && _muxChannel > -1) {
+            if (_mux) {
                 _mux->setChannel(_muxChannel);
             }
         }
