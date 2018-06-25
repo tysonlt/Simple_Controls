@@ -83,7 +83,7 @@ void Potentiometer::setReadCount(byte readCount) {
  * 
  * Defaults to 1.
  */ 
-void Potentiometer::setReadDelay(byte readDelay) {
+void Potentiometer::setReadDelay(unsigned int readDelay) {
     _readDelay = readDelay;
 }
 
@@ -116,7 +116,7 @@ void Potentiometer::_readPin() {
 
         //this may help prevent jitter and interference with other pins
         if (_readDelay > 0) {
-            delay(_readDelay);
+            delayMicroseconds(_readDelay);
         }
 
         //read the pin

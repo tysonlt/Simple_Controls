@@ -30,8 +30,7 @@ class Joystick : public Control {
      */
     Joystick(byte pin_x, byte pin_y, int threshold = 150, Multiplexer *mux=nullptr, byte muxChannel=0) : 
       _pin_x(pin_x), _pin_y(pin_y), _threshold(threshold) {
-        _mux = mux;
-        _muxChannel = muxChannel;
+        setMultiplexer(mux, muxChannel);
       }
 
     /**
@@ -41,7 +40,7 @@ class Joystick : public Control {
      * changed() will always return false until read() 
      * is called.
      */
-    void begin();
+    virtual void begin();
 
     /**
      * Update current value of the control and test whether we have changed.
@@ -50,7 +49,7 @@ class Joystick : public Control {
      * 
      * @return boolean Whether the value has changed since last read.
      */
-    boolean read();
+    virtual boolean read();
     
     /**
      * Returns the current x value.

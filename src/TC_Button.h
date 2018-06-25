@@ -23,17 +23,16 @@ class Button : public Control
         // invert   true to interpret a low logic level as pressed (default true)
         Button(uint8_t pin, uint32_t dbTime=25, uint8_t puEnable=true, uint8_t invert=true, Multiplexer *mux=nullptr, byte muxChannel=0)
             : m_pin(pin), m_dbTime(dbTime), m_puEnable(puEnable), m_invert(invert) {
-                _mux = mux;
-                _muxChannel = muxChannel;
+                setMultiplexer(mux, muxChannel);
             }
 
-        // Initialize a Button object and the pin it's connected to
-        void begin();
+        // Initialize a control object and the pin it's connected to
+        virtual void begin();
 
         // Returns the current debounced button state, true for pressed,
         // false for released. Call this function frequently to ensure
         // the sketch is responsive to user input.
-        bool read();
+        virtual boolean read();
 
         // Returns true if the button state was pressed at the last call to read().
         // Does not cause the button to be read.

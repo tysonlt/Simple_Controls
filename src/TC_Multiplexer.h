@@ -18,7 +18,7 @@ class Multiplexer {
         /**
          * 
          */ 
-        Multiplexer(byte pin0, byte pin1, byte pin2, byte pin3, byte enablePin = -1) {
+        Multiplexer(byte pin0, byte pin1, byte pin2, byte pin3, byte enablePin = 0) {
             _pins[0] = pin0;
             _pins[1] = pin1;
             _pins[2] = pin2;
@@ -29,11 +29,13 @@ class Multiplexer {
 
         /**
          * Turn the mux on, if enable pin was set
+         * @return Whether the enable pin is set.
          */
-        void setEnabled(bool enabled) {
-            if (_enablePin > -1) {
+        boolean setEnabled(bool enabled) {
+            if (_enablePin) {
                 digitalWrite(_enablePin, enabled ? LOW : HIGH);
             }
+            return _enablePin;
         }
 
         /**         
@@ -47,7 +49,7 @@ class Multiplexer {
 
     private:
         byte _pins[4];
-        int _enablePin = -1; 
+        int _enablePin; 
 
         /**
          * Set pin modes and enable pin.
@@ -57,14 +59,13 @@ class Multiplexer {
                         
             //set pin modes
             for (byte i=0; i<4; i++) {            
-                pinMode(_pins[i], OUTPUT);
-                setEnabled(true);
+                pinMode(_pins[i], OUTPUT);                
             }
 
             //enable
-            if (_enablePin > -1) {
+            if (_enablePin) {
                 pinMode(_enablePin, OUTPUT);	
-                digitalWrite(_enablePin, LOW); // start enabled
+                setEnabled(true);
             }
 
 

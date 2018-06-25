@@ -30,11 +30,10 @@ class Potentiometer : public Control {
      * @param int resolution (Optional) Supply a number smaller than MAX(1023) to have output scaled.
      * @param byte readCount (Optional) How many times to read the pin. Default is 1.
      * @param byte readDelay (Optional) Adds a small delay before each read. Default is 1. Supply 0 to disable.
-     */
-    Potentiometer(byte pin, int resolution = 0, float smoothingFactor = 0.6, byte readCount = 1, byte readDelay = 1, Multiplexer *mux=nullptr, byte muxChannel=0) : 
+     */  
+    Potentiometer(byte pin, int resolution = 0, float smoothingFactor = 0.6, byte readCount = 1, unsigned int readDelay = 1, Multiplexer *mux=nullptr, byte muxChannel=0) : 
       _pin(pin), _resolution(resolution), _smoothingFactor(smoothingFactor), _readCount(readCount), _readDelay(readDelay) {
-      _mux = mux;
-      _muxChannel = muxChannel; 
+      setMultiplexer(_mux, muxChannel);
     }
   
     /**
@@ -44,7 +43,7 @@ class Potentiometer : public Control {
      * changed() will always return false until read() 
      * is called.
      */
-    void begin();
+    virtual void begin();
 
     /**
      * Update current value of the control and test whether we have changed.
@@ -53,7 +52,7 @@ class Potentiometer : public Control {
      * 
      * @return boolean Whether the value has changed since last read.
      */
-    boolean read();
+    virtual boolean read();
 
     /**
      * Set the resolution to remap values to.
@@ -82,14 +81,14 @@ class Potentiometer : public Control {
     void setReadCount(byte readCount);
 
     /**
-     * How many milliseconds to delay before reading the pin.
+     * How many microseconds to delay before reading the pin.
      * 
      * Increased delays may help reduce jitter, especially
      * if not using the smoothing algorithm.
      * 
      * Defaults to 1.
      */ 
-    void setReadDelay(byte readDelay);
+    void setReadDelay(unsigned int readDelay);
 
     /**
      * Get the current potentiometer value at the configured resolution.
@@ -123,7 +122,7 @@ class Potentiometer : public Control {
     int _resolution;
     float _smoothingFactor;
     byte _readCount; 
-    byte _readDelay;
+    unsigned int _readDelay;
     int _time = 0, _lastChange = 0;
     int _value, _lastValue;
     boolean _changed = false;

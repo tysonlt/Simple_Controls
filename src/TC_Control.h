@@ -8,7 +8,27 @@
  * 
  * Overrides basic pin read/write functions to apply mux if applicable.
  */ 
-class Control {
+class Control {    
+
+    public:
+
+        /**
+         * Initialize a control object and the pin it's connected to.
+         */ 
+        virtual void begin();
+
+        /**
+         * Read the pin and update internal state.
+         */ 
+        virtual boolean read();        
+
+        /**
+         * Use Multiplexer when reading pin.
+         */ 
+        void setMultiplexer(Multiplexer *mux, byte channel) {
+            _mux = mux;
+            _muxChannel = channel;            
+        }
 
     protected:
         byte _muxChannel = 0;
