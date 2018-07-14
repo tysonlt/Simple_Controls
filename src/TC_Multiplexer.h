@@ -1,5 +1,4 @@
-#ifndef THWAITES_CONTROLS_MULTIPLEXER_H
-#define THWAITES_CONTROLS_MULTIPLEXER_H
+#pragma once
 
 #include "Arduino.h"
 #include "TC_Control.h"
@@ -72,5 +71,3 @@ class Multiplexer {
         }
 
 };
-
-#endif

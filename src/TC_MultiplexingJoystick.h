@@ -1,5 +1,4 @@
-#ifndef THWAITES_CONTROLS_MULTIPLEXING_JOYSTICK_H
-#define THWAITES_CONTROLS_MULTIPLEXING_JOYSTICK_H
+#pragma once
 
 #include "Arduino.h"
 #include "TC_Joystick.h"
@@ -37,5 +36,3 @@ class MultiplexingJoystick : public Joystick {
         }
 
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef THWAITES_CONTROLS_POTENTIOMETER_H
-#define THWAITES_CONTROLS_POTENTIOMETER_H
+#pragma once
 
 #include "Arduino.h"
 #include "TC_Control.h"
@@ -148,5 +147,3 @@ class Potentiometer : public Control {
     int _smoothValue(const int raw);
   
 };
-
-#endif

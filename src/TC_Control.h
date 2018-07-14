@@ -1,5 +1,4 @@
-#ifndef THWAITES_CONTROLS_CONTROL_H
-#define THWAITES_CONTROLS_CONTROL_H
+#pragma once
 
 #include <TC_Multiplexer.h>
 
@@ -76,5 +75,3 @@ class Control {
         }
 
 };
-
-#endif

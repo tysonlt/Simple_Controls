@@ -3,8 +3,7 @@
 // Copyright (C) 2018 by Jack Christensen and licensed under
 // GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
 
-#ifndef TC_BUTTON_H_INCLUDED
-#define TC_BUTTON_H_INCLUDED
+#pragma once
 
 #include <Arduino.h>
 #include "TC_Control.h"
@@ -79,4 +78,3 @@ class Button : public Control
         uint32_t m_lastChange;  // time of last state change (ms)
         
 };
-#endif

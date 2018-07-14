@@ -1,5 +1,4 @@
-#ifndef THWAITES_CONTROLS_JOYSTICK_H
-#define THWAITES_CONTROLS_JOYSTICK_H
+#pragma once
 
 #include "Arduino.h"
 #include "TC_Control.h"
@@ -165,5 +164,3 @@ class Joystick : public Control {
     }
 
 };
-
-#endif
