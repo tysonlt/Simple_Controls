@@ -33,7 +33,7 @@ class Potentiometer : public Control {
      */  
     Potentiometer(byte pin, int resolution = 0, float smoothingFactor = 0.6, byte readCount = 1, unsigned int readDelay = 1, Multiplexer *mux=nullptr, byte muxChannel=0) : 
       _pin(pin), _resolution(resolution), _smoothingFactor(smoothingFactor), _readCount(readCount), _readDelay(readDelay) {
-      setMultiplexer(_mux, muxChannel);
+      setMultiplexer(mux, muxChannel);
     }
   
     /**
