@@ -17,12 +17,13 @@
  * Saves the current x/y as the centre.
  */
 void Joystick::begin() { 
-    _last_flags = 0;
+    _lastFlags = 0;
     _flags = 0;
     _time = millis();
     _lastChange = _time;
-    _centre_x = analogRead(_pin_x);
-    _centre_y = analogRead(_pin_y);
+    _readPins();
+    _centreX = _x;
+    _centreY = _y;
 }
 
 /**
@@ -36,29 +37,28 @@ boolean Joystick::read() {
     _time = millis();
 
     //save last state
-    _last_flags = _flags;
+    _lastFlags = _flags;
     _flags = 0;
 
     //read the pins
-    _x = analogRead(_pin_x);
-    _y = analogRead(_pin_y);
+    _readPins();
 
     //set flags for x axis
-    if (_x > _centre_x + _threshold) {
+    if (_x > _centreX + _threshold) {
         _flags |= RIGHT;
-    } else if (_x < _centre_x - _threshold) {
+    } else if (_x < _centreX - _threshold) {
         _flags |= LEFT;
     }
 
     //set flags for y axis (both axes can change at once)
-    if (_y < _centre_y - _threshold) {
+    if (_y < _centreY - _threshold) {
         _flags |= UP;
-    } else if (_y > _centre_y + _threshold) {
+    } else if (_y > _centreY + _threshold) {
         _flags |= DOWN;
     }
 
     //have we changed since last read?
-    _changed = _flags != _last_flags;
+    _changed = _flags != _lastFlags;
     if (_changed) {
         _lastChange = _time;
     }
@@ -85,14 +85,14 @@ int Joystick::getY() {
  * The current distance from the centre of the joystick.
  */ 
 int Joystick::getDeltaX() { 
-    return _x - _centre_x; 
+    return _x - _centreX; 
 }
 
 /**
  * The current distance from the centre of the joystick.
  */
 int Joystick::getDeltaY() { 
-    return _y - _centre_y; 
+    return _y - _centreY; 
 }
 
 /**
