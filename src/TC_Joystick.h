@@ -28,10 +28,8 @@ class Joystick : public Control {
     /**
      * Supply pins for x and y axis.
      */
-    Joystick(byte pin_x, byte pin_y, int threshold = 150, Multiplexer *mux=nullptr, byte muxChannel=0) : 
-      _pin_x(pin_x), _pin_y(pin_y), _threshold(threshold) {
-        setMultiplexer(mux, muxChannel);
-      }
+    Joystick(byte pinX, byte pinY, int threshold = 150) : 
+      _pinX(pinX), _pinY(pinY), _threshold(threshold) {}
 
     /**
      * Initialise.
@@ -149,14 +147,22 @@ class Joystick : public Control {
      */
     inline int lastChange() { return _lastChange; }
   
-  private:
-    byte _pin_x;
-    byte _pin_y;
+  protected:
+    byte _pinX;
+    byte _pinY;
     int _threshold;
-    int _x, _y, _centre_x, _centre_y;
-    byte _last_flags = 0, _flags = 0;
+    int _x, _y, _centreX, _centreY;
+    byte _lastFlags = 0, _flags = 0;
     int _time = 0, _lastChange = 0;
     boolean _changed = false;
+
+    /**
+     * Read the pins.
+     */ 
+    virtual void _readPins() {
+      _x = analogRead(_pinX);
+      _y = analogRead(_pinY);
+    }
 
 };
 
