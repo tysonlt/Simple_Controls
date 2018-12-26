@@ -3,7 +3,7 @@
 // Copyright (C) 2018 by Jack Christensen and licensed under
 // GNU GPL v3.0, https://www.gnu.org/licenses/gpl.html
 
-#include "TC_Button.h"
+#include "SC_Button.h"
 
 /*----------------------------------------------------------------------*
 / initialize a Button object and the pin it's connected to.             *
