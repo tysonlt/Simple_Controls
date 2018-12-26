@@ -1,4 +1,4 @@
-# Thwaites Controls
+# Simple Controls
 Simple control classes to interface with joysticks and potentiometers.
 
 ## License
