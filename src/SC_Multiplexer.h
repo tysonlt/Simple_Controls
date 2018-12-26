@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Arduino.h"
-#include "TC_Control.h"
+#include "SC_Control.h"
 
 /**
  * A simple Multiplexer.
