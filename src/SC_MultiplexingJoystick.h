@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Arduino.h"
-#include "TC_Joystick.h"
+#include "SC_Joystick.h"
 
 /**
  * Extension of joystick to work with a multiplexer.
