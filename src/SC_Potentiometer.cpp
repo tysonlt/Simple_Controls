@@ -7,7 +7,7 @@
  * Inspired by https://github.com/JChristensen/JC_Button.
  */
 
-#include "TC_Potentiometer.h"
+#include "SC_Potentiometer.h"
 
 /**
  * Initialise.
