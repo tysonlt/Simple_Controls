@@ -1,6 +1,6 @@
 #pragma once
 
-#include <TC_Multiplexer.h>
+#include <SC_Multiplexer.h>
 
 /**
  * Mux-aware base class.
