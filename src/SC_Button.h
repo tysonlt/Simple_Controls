@@ -35,27 +35,27 @@ class Button : public Control
 
         // Returns true if the button state was pressed at the last call to read().
         // Does not cause the button to be read.
-        bool isPressed();
+        boolean isPressed();
 
         // Returns true if the button state was released at the last call to read().
         // Does not cause the button to be read.
-        bool isReleased();
+        boolean isReleased();
 
         // Returns true if the button state at the last call to read() was pressed,
         // and this was a change since the previous read.
-        bool wasPressed();
+        boolean wasPressed();
 
         // Returns true if the button state at the last call to read() was released,
         // and this was a change since the previous read.
-        bool wasReleased();
+        boolean wasReleased();
 
         // Returns true if the button state at the last call to read() was pressed,
         // and has been in that state for at least the given number of milliseconds.
-        bool pressedFor(uint32_t ms);
+        boolean pressedFor(uint32_t ms);
 
         // Returns true if the button state at the last call to read() was released,
         // and has been in that state for at least the given number of milliseconds.
-        bool releasedFor(uint32_t ms);
+        boolean releasedFor(uint32_t ms);
 
         // Returns the time in milliseconds (from millis) that the button last
         // changed state.
@@ -69,11 +69,11 @@ class Button : public Control
     private:
         uint8_t m_pin;          // arduino pin number connected to button
         uint32_t m_dbTime;      // debounce time (ms)
-        bool m_puEnable;        // internal pullup resistor enabled
-        bool m_invert;          // if true, interpret logic low as pressed, else interpret logic high as pressed
-        bool m_state;           // current button state, true=pressed
-        bool m_lastState;       // previous button state
-        bool m_changed;         // state changed since last read
+        boolean m_puEnable;        // internal pullup resistor enabled
+        boolean m_invert;          // if true, interpret logic low as pressed, else interpret logic high as pressed
+        boolean m_state;           // current button state, true=pressed
+        boolean m_lastState;       // previous button state
+        boolean m_changed;         // state changed since last read
         uint32_t m_time;        // time of current state (ms from millis)
         uint32_t m_lastChange;  // time of last state change (ms)
         

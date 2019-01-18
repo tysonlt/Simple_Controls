@@ -22,10 +22,10 @@ void Button::begin() {
 / returns the state of the button, true if pressed, false if released.  *
 / does debouncing, captures and maintains times, previous state, etc.   *
 /-----------------------------------------------------------------------*/
-bool Button::read() {    
+boolean Button::read() {    
 
     uint32_t ms = millis();
-    bool pinVal = digitalRead(m_pin);
+    boolean pinVal = digitalRead(m_pin);
     if (m_invert) pinVal = !pinVal;
     if (ms - m_lastChange < m_dbTime) {
         m_changed = false;
@@ -44,11 +44,11 @@ bool Button::read() {
  * read, and return false (0) or true (!=0) accordingly.                *
  * These functions do not cause the button to be read.                  *
  *----------------------------------------------------------------------*/
-bool Button::isPressed() {
+boolean Button::isPressed() {
     return m_state;
 }
 
-bool Button::isReleased() {
+boolean Button::isReleased() {
     return !m_state;
 }
 
@@ -58,11 +58,11 @@ bool Button::isReleased() {
  * true (!=0) accordingly.                                              *
  * These functions do not cause the button to be read.                  *
  *----------------------------------------------------------------------*/
-bool Button::wasPressed() {
+boolean Button::wasPressed() {
     return m_state && m_changed;
 }
 
-bool Button::wasReleased() {
+boolean Button::wasReleased() {
     return !m_state && m_changed;
 }
 
@@ -72,11 +72,11 @@ bool Button::wasReleased() {
  * time in milliseconds. Returns false (0) or true (!=0) accordingly.   *
  * These functions do not cause the button to be read.                  *
  *----------------------------------------------------------------------*/
-bool Button::pressedFor(uint32_t ms) {
+boolean Button::pressedFor(uint32_t ms) {
     return m_state && m_time - m_lastChange >= ms;
 }
 
-bool Button::releasedFor(uint32_t ms) {
+boolean Button::releasedFor(uint32_t ms) {
     return !m_state && m_time - m_lastChange >= ms;
 }
 

@@ -30,7 +30,7 @@ class Multiplexer {
          * Turn the mux on, if enable pin was set
          * @return Whether the enable pin is set (ie, whether this operation did anything)
          */
-        boolean setEnabled(bool enabled) {
+        boolean setEnabled(boolean enabled) {
             if (_enablePin) {
                 digitalWrite(_enablePin, enabled ? LOW : HIGH);
             }
