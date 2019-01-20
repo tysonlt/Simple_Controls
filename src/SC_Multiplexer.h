@@ -39,7 +39,7 @@ class Multiplexer {
         /**         
          * Set the current mux channel [0-15] using 4 digtal pins to write the 4 bit integer
          */
-        void setChannel(int channel) {
+        void setChannel(byte channel) {
             for (byte i=0; i<4; i++) {                       
                 digitalWrite(_pins[i], bitRead(channel, i));
             }
