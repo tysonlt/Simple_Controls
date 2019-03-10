@@ -9,13 +9,13 @@
 / initialize a Button object and the pin it's connected to.             *
 /-----------------------------------------------------------------------*/
 void Button::begin() {
-    pinMode(m_pin, m_puEnable ? INPUT_PULLUP : INPUT);    
-    m_state = digitalRead(m_pin);
-    if (m_invert) m_state = !m_state;
-    m_time = millis();
-    m_lastState = m_state;
-    m_changed = false;
-    m_lastChange = m_time;
+    pinMode(_pin, _puEnable ? INPUT_PULLUP : INPUT);    
+    _state = digitalRead(_pin);
+    if (_invert) _state = !_state;
+    _lastState = _state;
+    _time = millis();
+    _lastChange = _time;
+    _changed = false;
 }
 
 /*----------------------------------------------------------------------*
@@ -25,18 +25,20 @@ void Button::begin() {
 boolean Button::read() {    
 
     uint32_t ms = millis();
-    boolean pinVal = digitalRead(m_pin);
-    if (m_invert) pinVal = !pinVal;
-    if (ms - m_lastChange < m_dbTime) {
-        m_changed = false;
+    boolean pinVal = digitalRead(_pin);
+    if (_invert) pinVal = !pinVal;
+    if (ms - _lastChange < _dbTime) {
+        _changed = false;
     } else {
-        m_lastState = m_state;
-        m_state = pinVal;
-        m_changed = (m_state != m_lastState);
-        if (m_changed) m_lastChange = ms;
+        _lastState = _state;
+        _state = pinVal;
+        _changed = (_state != _lastState);				                
+        if (_changed) {
+            _lastChange = ms;
+        }
     }
-    m_time = ms;
-    return m_state;
+    _time = ms;
+    return _state;
 }
 
 /*----------------------------------------------------------------------*
@@ -45,11 +47,11 @@ boolean Button::read() {
  * These functions do not cause the button to be read.                  *
  *----------------------------------------------------------------------*/
 boolean Button::isPressed() {
-    return m_state;
+    return _state;
 }
 
 boolean Button::isReleased() {
-    return !m_state;
+    return !_state;
 }
 
 /*----------------------------------------------------------------------*
@@ -59,11 +61,11 @@ boolean Button::isReleased() {
  * These functions do not cause the button to be read.                  *
  *----------------------------------------------------------------------*/
 boolean Button::wasPressed() {
-    return m_state && m_changed;
+    return _state && _changed;
 }
 
 boolean Button::wasReleased() {
-    return !m_state && m_changed;
+    return !_state && _changed;
 }
 
 /*----------------------------------------------------------------------*
@@ -73,11 +75,11 @@ boolean Button::wasReleased() {
  * These functions do not cause the button to be read.                  *
  *----------------------------------------------------------------------*/
 boolean Button::pressedFor(uint32_t ms) {
-    return m_state && m_time - m_lastChange >= ms;
+    return _state && _time - _lastChange >= ms;
 }
 
 boolean Button::releasedFor(uint32_t ms) {
-    return !m_state && m_time - m_lastChange >= ms;
+    return !_state && _time - _lastChange >= ms;
 }
 
 /*----------------------------------------------------------------------*
@@ -85,5 +87,5 @@ boolean Button::releasedFor(uint32_t ms) {
  * in milliseconds.                                                     *
  *----------------------------------------------------------------------*/
 uint32_t Button::lastChange() {
-    return m_lastChange;
+    return _lastChange;
 }

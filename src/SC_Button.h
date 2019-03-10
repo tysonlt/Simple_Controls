@@ -11,6 +11,13 @@
 class Button : public Control
 {
     public:
+
+        Button() {
+            setPullupEnable(true);
+            setInverted(true);
+            setDebounceTime(25);
+        }
+
         // Button(pin, dbTime, puEnable, invert) instantiates a button object.
         //
         // Required parameter:
@@ -21,9 +28,14 @@ class Button : public Control
         // puEnable true to enable the AVR internal pullup resistor (default true)
         // invert   true to interpret a low logic level as pressed (default true)
         Button(uint8_t pin, uint32_t dbTime=25, uint8_t puEnable=true, uint8_t invert=true, Multiplexer *mux=nullptr, byte muxChannel=0)
-            : m_pin(pin), m_dbTime(dbTime), m_puEnable(puEnable), m_invert(invert) {
+            : _pin(pin), _dbTime(dbTime), _puEnable(puEnable), _invert(invert) {
                 setMultiplexer(mux, muxChannel);
             }
+
+        inline void setPin(uint8_t pin) { _pin = pin; }
+        inline void setDebounceTime(uint32_t dbTime) { _dbTime = dbTime; }
+        inline void setPullupEnable(uint8_t puEnable) { _puEnable = puEnable; }
+        inline void setInverted(uint8_t invert) { _invert = invert; }
 
         // Initialize a control object and the pin it's connected to
         virtual void begin();
@@ -64,17 +76,16 @@ class Button : public Control
         /**
          * Whether the value has changed since the last read.
          */
-        inline boolean changed() { return m_changed; }
+        inline boolean changed() { return _changed; }
 
-    private:
-        uint8_t m_pin;          // arduino pin number connected to button
-        uint32_t m_dbTime;      // debounce time (ms)
-        boolean m_puEnable;        // internal pullup resistor enabled
-        boolean m_invert;          // if true, interpret logic low as pressed, else interpret logic high as pressed
-        boolean m_state;           // current button state, true=pressed
-        boolean m_lastState;       // previous button state
-        boolean m_changed;         // state changed since last read
-        uint32_t m_time;        // time of current state (ms from millis)
-        uint32_t m_lastChange;  // time of last state change (ms)
+    protected:
+        uint8_t _pin;          // arduino pin number connected to button
+        uint32_t _dbTime;      // debounce time (ms)
+        boolean _puEnable;     // internal pullup resistor enabled
+        boolean _invert;       // if true, interpret logic low as pressed, else interpret logic high as pressed
+        boolean _state;        // current button state, true=pressed
+        boolean _lastState;    // previous button state
+        uint32_t _time;        // time of current state (ms from millis)
+        uint32_t _lastChange;  // time of last state change (ms)
         
 };

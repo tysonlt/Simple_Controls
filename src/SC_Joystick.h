@@ -153,7 +153,6 @@ class Joystick : public Control {
     int _x, _y, _centreX, _centreY;
     byte _lastFlags = 0, _flags = 0;
     int _time = 0, _lastChange = 0;
-    boolean _changed = false;
 
     /**
      * Read the pins.

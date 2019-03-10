@@ -22,6 +22,11 @@ class Control {
         virtual boolean read();        
 
         /**
+         * Whether the value has changed since the last read.
+         */
+        virtual boolean changed();
+
+        /**
          * Use Multiplexer when reading pin.
          */ 
         void setMultiplexer(Multiplexer *mux, byte channel) {
@@ -32,6 +37,7 @@ class Control {
     protected:
         byte _muxChannel = 0;
         Multiplexer *_mux = nullptr;
+        boolean _changed = false;
 
         /**
          * Overloaded to apply mux channel first.

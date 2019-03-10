@@ -116,7 +116,7 @@ class Potentiometer : public Control {
      */
     inline int lastChange() { return _lastChange; }
 
-  private:
+  protected:
     byte _pin;
     int _resolution;
     float _smoothingFactor;
@@ -124,7 +124,6 @@ class Potentiometer : public Control {
     unsigned int _readDelay;
     int _time = 0, _lastChange = 0;
     int _value, _lastValue;
-    boolean _changed = false;
     
     /**
      * Calculate whether to set _changed based on resolution.
