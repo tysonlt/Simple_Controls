@@ -62,6 +62,7 @@ class Multiplexer {
             for (byte i=0; i<4; i++) {                       
                 digitalWrite(_pins[i], bitRead(channel, i));
             }
+            delayMicroseconds(1); //Fix #1: 0 and 8 both getting fired
         }
 
     protected:
